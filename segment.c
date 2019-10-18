@@ -114,10 +114,11 @@ remove_home(Path *p)
 	Path *np, *cp, *ch, *h = path(getenv("HOME"));
 	cp = p;
 	for (ch=h; ch != NULL; ch=ch->next) {
-		if (strcmp(ch->dir, cp->dir) == 0)
-			cp = cp->next;
-		else
+		if (cp == NULL || strcmp(ch->dir, cp->dir)) {
+			cp = p;
 			break;
+		} else
+			cp = cp->next;
 	}
 	while (p != cp && p != NULL) {
 		np = p->next;
