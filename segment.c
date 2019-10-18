@@ -157,6 +157,8 @@ pwd(void)
 		h = new("~", 226, 233);
 		h->bold = 1;
 		p = c;
+		if (c == NULL)
+			return h;
 	}
 	strcpy(buf, p->dir);
 	for (c=p->next; c != NULL; c=c->next) {
