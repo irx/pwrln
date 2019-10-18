@@ -7,18 +7,6 @@
 #include <unistd.h>
 #include <pwd.h>
 
-enum {
-	DELIM,
-	SUBDEL,
-	PROMPT
-};
-
-static const char glyphs[][4] = {
-	{0xee, 0x82, 0xb0, 0x00},
-	{0xee, 0x82, 0xb1, 0x00},
-	"%"
-};
-
 static const char delim[] = {0xee, 0x82, 0xb0, 0x00};
 static const char sdelim[] = {0xee, 0x82, 0xb1, 0x00};
 static const char prp[] = "%";
@@ -40,7 +28,7 @@ struct Path {
 
 
 Segment *
-new(char *content, unsigned char bg, unsigned int fg)
+new(const char *content, unsigned char bg, unsigned int fg)
 {
 	Segment *s = (Segment *)malloc(sizeof(Segment));
 	s->bg = bg;
@@ -120,6 +108,32 @@ path(char *str)
 	return p;
 }
 
+Path *
+remove_home(Path *p)
+{
+	Path *np, *cp, *ch, *h = path(getenv("HOME"));
+	cp = p;
+	for (ch=h; ch != NULL; ch=ch->next) {
+		if (strcmp(ch->dir, cp->dir) == 0)
+			cp = cp->next;
+		else
+			break;
+	}
+	while (p != cp && p != NULL) {
+		np = p->next;
+		free(p->dir);
+		free(p);
+		p = np;
+	}
+	while (h != NULL) {
+		ch = h->next;
+		free(h->dir);
+		free(h);
+		h = ch;
+	}
+	return p;
+}
+
 Segment *
 user(void)
 {
@@ -133,9 +147,15 @@ Segment *
 pwd(void)
 {
 	Path *p, *c;
+	Segment *s, *h = NULL;
 	char buf[512], del[6];
-	sprintf(del, " %s ", subdelim);
+	sprintf(del, " %s ", sdelim);
 	p = path(getenv("PWD"));
+	c = remove_home(p);
+	if (c != p) {
+		h = new("~", 238, 248);
+		p = c;
+	}
 	strcpy(buf, p->dir);
 	for (c=p->next; c != NULL; c=c->next) {
 		strcat(buf, del);
@@ -147,7 +167,12 @@ pwd(void)
 		free(p);
 		p = c->next;
 	}
-	return new(buf, 238, 248);
+	s = new(buf, 238, 248);
+	if (h != NULL)
+		h->next = s;
+	else
+		h = s;
+	return h;
 }
 
 Segment *
