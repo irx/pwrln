@@ -166,10 +166,10 @@ pwd(void)
 		strcat(buf, c->dir);
 	}
 	while (p != NULL) {
-		c = p;
+		c = p->next;
 		free(p->dir);
 		free(p);
-		p = c->next;
+		p = c;
 	}
 	s = new(buf, 238, 248);
 	if (h != NULL)
