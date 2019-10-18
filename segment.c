@@ -66,15 +66,15 @@ render(Segment *s)
 {
 	char tmp[512], *buf = (char *)malloc(sizeof(char)*512);
 	if (s->bold)
-		sprintf(buf, "%c[1m", esc);
+		sprintf(buf, "\001%c[1m\002", esc);
 	else
 		buf[0] = '\0';
-	sprintf(tmp, "%c[48;5;%d;38;5;%dm %s ", esc, s->bg, s->fg, s->content);
+	sprintf(tmp, "\001%c[48;5;%d;38;5;%dm\002 %s ", esc, s->bg, s->fg, s->content);
 	strcat(buf, tmp);
 	if (s->next != NULL)
-		sprintf(tmp, "%c[0;48;5;%d;38;5;%dm%s", esc, s->next->bg, s->bg, delim);
+		sprintf(tmp, "\001%c[0;48;5;%d;38;5;%dm\002%s", esc, s->next->bg, s->bg, delim);
 	else
-		sprintf(tmp, "%c[0;38;5;%dm%s%c[0m ", esc, s->bg, delim, esc);
+		sprintf(tmp, "\001%c[0;38;5;%dm\002%s\001%c[0m\002 ", esc, s->bg, delim, esc);
 	strcat(buf, tmp);
 	return buf;
 }
