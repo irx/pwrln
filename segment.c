@@ -154,7 +154,8 @@ pwd(void)
 	p = path(getenv("PWD"));
 	c = remove_home(p);
 	if (c != p) {
-		h = new("~", 238, 248);
+		h = new("~", 226, 233);
+		h->bold = 1;
 		p = c;
 	}
 	strcpy(buf, p->dir);
@@ -179,26 +180,20 @@ pwd(void)
 Segment *
 prompt(int status)
 {
+	Segment *s;
 	int col = status ? 160 : 236;
-	return new(prp, col, 7);
+	s = new(prp, col, 7);
+	s->bold = 1;
+	return s;
 }
 
 int
 main(void)
 {
-	Segment *cur, *one = user();
-	one->next = pwd();
-	one->next->next = new("%", 236, 7);
-	one->next->next->bold = 1;
-	tail(one)->next = pwd();
-	tail(one)->next = new("attention", 226, 233);
-	tail(one)->next = prompt(1);
-	for (cur = one; cur != NULL; cur = cur->next)
+	Segment *cur, *first = user();
+	tail(first)->next = pwd();
+	tail(first)->next = prompt(0);
+	for (cur=first; cur != NULL; cur=cur->next)
 		print(cur);
-	Path *p = path(getenv("HOME"));
-	/*
-	for (; p != NULL; p=p->next)
-		printf("%s\n", p->dir);
-		*/
 	return 0;
 }
