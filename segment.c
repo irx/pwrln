@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <pwd.h>
 
+static const char esc = 0x1b;
 static const char delim[] = {0xee, 0x82, 0xb0, 0x00};
 static const char sdelim[] = {0xee, 0x82, 0xb1, 0x00};
 static const char prp[] = "%";
@@ -60,16 +61,36 @@ prune(Segment *s)
 	}
 }
 
+char *
+render(Segment *s)
+{
+	char tmp[512], *buf = (char *)malloc(sizeof(char)*512);
+	if (s->bold)
+		sprintf(buf, "%c[1m", esc);
+	else
+		buf[0] = '\0';
+	sprintf(tmp, "%c[48;5;%d;38;5;%dm %s ", esc, s->bg, s->fg, s->content);
+	strcat(buf, tmp);
+	if (s->next != NULL)
+		sprintf(tmp, "%c[0;48;5;%d;38;5;%dm%s", esc, s->next->bg, s->bg, delim);
+	else
+		sprintf(tmp, "%c[0;38;5;%dm%s%c[0m ", esc, s->bg, delim, esc);
+	strcat(buf, tmp);
+	return buf;
+}
+
 void
 print(Segment *s)
 {
-	if (s->bold)
-		printf("\x1b[1m");
-	printf("\x1b[48;5;%d;38;5;%dm %s ", s->bg, s->fg, s->content);
-	if (s->next != NULL)
-		printf("\x1b[0;48;5;%d;38;5;%dm%s", s->next->bg, s->bg, delim);
-	else
-		printf("\x1b[0;38;5;%dm%s\x1b[0m ", s->bg, delim);
+	char *tmp, buf[512];
+	buf[0] = '\0';
+	while (s != NULL) {
+		tmp = render(s);
+		strcat(buf, tmp);
+		s = s->next;
+		free(tmp);
+	}
+	printf("%s", buf);
 }
 
 Path *
@@ -192,10 +213,9 @@ prompt(int status)
 int
 main(void)
 {
-	Segment *cur, *first = user();
+	Segment *first = user();
 	tail(first)->next = pwd();
 	tail(first)->next = prompt(0);
-	for (cur=first; cur != NULL; cur=cur->next)
-		print(cur);
+	print(first);
 	return 0;
 }
