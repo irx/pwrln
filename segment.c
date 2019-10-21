@@ -100,6 +100,7 @@ path(char *str)
 	Path *p, *c;
 	int i, offs = 1;
 	p = (Path *)malloc(sizeof(Path));
+	p->next = NULL;
 	p->dir = (char *)malloc(sizeof(char)*2);
 	p->dir[0] = '/';
 	p->dir[1] = '\0';
