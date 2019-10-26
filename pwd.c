@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "pwrln.h"
+#include "config.h"
 
 
 typedef struct Path Path;
@@ -91,7 +92,7 @@ user(void)
 {
 	struct passwd *pw;
 	pw = getpwuid(getuid());
-	Segment *s = new(pw->pw_name, 39, 26);
+	Segment *s = new(pw->pw_name, col_user[0], col_user[1]);
 	return s;
 }
 
@@ -101,11 +102,11 @@ pwd(void)
 	Path *p, *c;
 	Segment *s, *h = NULL;
 	char buf[512], del[6];
-	sprintf(del, " %s ", sdelim);
+	sprintf(del, " %s ", glyph_subdelimiter);
 	p = path(getenv("PWD"));
 	c = remove_home(p);
 	if (c != p) {
-		h = new("~", 226, 233);
+		h = new(glyph_home, col_home[0], col_home[1]);
 		h->bold = 1;
 		p = c;
 		if (c == NULL)
@@ -122,7 +123,7 @@ pwd(void)
 		free(p);
 		p = c;
 	}
-	s = new(buf, 238, 248);
+	s = new(buf, col_default[0], col_default[1]);
 	if (h != NULL)
 		h->next = s;
 	else
@@ -134,8 +135,8 @@ Segment *
 prompt(int status)
 {
 	Segment *s;
-	int col = status ? 160 : 236;
-	s = new(prp, col, 7);
+	int col = status ? col_prompt[0] : col_prompt[1];
+	s = new(glyph_prompt, col, col_prompt[2]);
 	s->bold = 1;
 	return s;
 }

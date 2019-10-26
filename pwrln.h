@@ -1,11 +1,5 @@
 /* Copyright (c) 2019 Maksymilian Mruszczak */
 
-static const char esc = 0x1b; /* escape char */
-/* Glyphs */
-static const char delim[] = {0xee, 0x82, 0xb0, 0x00};
-static const char sdelim[] = {0xee, 0x82, 0xb1, 0x00};
-static const char prp[] = "%";
-
 
 typedef struct Segment Segment;
 struct Segment {

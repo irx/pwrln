@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "pwrln.h"
+#include "config.h"
 
 
 Segment *
@@ -51,12 +52,15 @@ render(Segment *s)
 		sprintf(buf, "\001%c[1m\002", esc);
 	else
 		buf[0] = '\0';
-	sprintf(tmp, "\001%c[48;5;%d;38;5;%dm\002 %s ", esc, s->bg, s->fg, s->content);
+	sprintf(tmp, "\001%c[48;5;%d;38;5;%dm\002 %s ",
+	        esc, s->bg, s->fg, s->content);
 	strcat(buf, tmp);
 	if (s->next != NULL)
-		sprintf(tmp, "\001%c[0;48;5;%d;38;5;%dm\002%s", esc, s->next->bg, s->bg, delim);
+		sprintf(tmp, "\001%c[0;48;5;%d;38;5;%dm\002%s",
+		        esc, s->next->bg, s->bg, glyph_delimiter);
 	else
-		sprintf(tmp, "\001%c[0;38;5;%dm\002%s\001%c[0m\002 ", esc, s->bg, delim, esc);
+		sprintf(tmp, "\001%c[0;38;5;%dm\002%s\001%c[0m\002 ",
+		        esc, s->bg, glyph_delimiter, esc);
 	strcat(buf, tmp);
 	return buf;
 }

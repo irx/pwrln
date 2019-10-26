@@ -5,12 +5,13 @@ PREFIX = /usr/local/bin
 CFLAGS = -std=c99 -pedantic -Wall
 
 OBJ = segment.o main.o pwd.o
+HDR = pwrln.h segments.h config.h
 
 pwrln: ${OBJ}
 	@echo LD $@
 	@${CC} -o $@ ${OBJ}
 
-.c.o:
+.c.o: ${HDR}
 	@echo CC $<
 	@${CC} -c ${CFLAGS} $<
 
