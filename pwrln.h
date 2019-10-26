@@ -10,13 +10,13 @@ static const char prp[] = "%";
 typedef struct Segment Segment;
 struct Segment {
 	Segment *next;
-	unsigned int bg, fg;
+	unsigned char bg, fg;
 	int bold;
 	char *content;
 };
 
 /* create new segment <content, bg col, font col> */
-Segment * new(const char *, unsigned char, unsigned int);
+Segment * new(const char *, unsigned char, unsigned char);
 
 /* get last segment in chain */
 Segment * tail(Segment *);

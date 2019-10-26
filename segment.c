@@ -11,7 +11,7 @@
 
 
 Segment *
-new(const char *content, unsigned char bg, unsigned int fg)
+new(const char *content, unsigned char bg, unsigned char fg)
 {
 	Segment *s = (Segment *)malloc(sizeof(Segment));
 	s->bg = bg;
