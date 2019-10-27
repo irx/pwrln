@@ -31,6 +31,11 @@ path(char *str)
 	int i, offs = 1;
 	p = (Path *)malloc(sizeof(Path));
 	p->next = NULL;
+	if (str == NULL) {
+		p->dir = (char *)malloc(sizeof(char));
+		p->dir[0] = '\0';
+		return p;
+	}
 	p->dir = (char *)malloc(sizeof(char)*2);
 	p->dir[0] = '/';
 	p->dir[1] = '\0';
@@ -101,9 +106,13 @@ pwd(void)
 {
 	Path *p, *c;
 	Segment *s, *h = NULL;
-	char buf[TMPSIZ], del[6];
+	char buf[TMPSIZ], del[6], *cwd;
 	snprintf(del, 6, " %s ", glyph_subdelimiter);
-	p = path(getenv("PWD"));
+	if (!(cwd = getenv("PWD"))) {
+		getcwd(buf, TMPSIZ);
+		cwd = buf;
+	}
+	p = path(cwd);
 	c = remove_home(p);
 	if (c != p) {
 		h = new(glyph_home, col_home[0], col_home[1]);
