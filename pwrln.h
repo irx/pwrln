@@ -1,5 +1,6 @@
 /* Copyright (c) 2019 Maksymilian Mruszczak */
 
+#define TMPSIZ 512
 
 typedef struct Segment Segment;
 struct Segment {

@@ -26,7 +26,7 @@ static Path * remove_home(Path *);
 Path *
 path(char *str)
 {
-	char buf[512];
+	char buf[TMPSIZ];
 	Path *p, *c;
 	int i, offs = 1;
 	p = (Path *)malloc(sizeof(Path));
@@ -43,7 +43,7 @@ path(char *str)
 			c->next = (Path *)malloc(sizeof(Path));
 			c = c->next;
 			c->dir = (char *)malloc(strlen(buf)+sizeof(char));
-			strcpy(c->dir, buf);
+			strlcpy(c->dir, buf, TMPSIZ);
 			c->next = NULL;
 		} else
 			buf[i] = str[offs+i];
@@ -55,7 +55,7 @@ path(char *str)
 		c = c->next;
 		c->next = NULL;
 		c->dir = (char *)malloc(strlen(buf)+sizeof(char));
-		strcpy(c->dir, buf);
+		strlcpy(c->dir, buf, TMPSIZ);
 	}
 	return p;
 }
@@ -101,8 +101,8 @@ pwd(void)
 {
 	Path *p, *c;
 	Segment *s, *h = NULL;
-	char buf[512], del[6];
-	sprintf(del, " %s ", glyph_subdelimiter);
+	char buf[TMPSIZ], del[6];
+	snprintf(del, 6, " %s ", glyph_subdelimiter);
 	p = path(getenv("PWD"));
 	c = remove_home(p);
 	if (c != p) {
@@ -112,10 +112,10 @@ pwd(void)
 		if (c == NULL)
 			return h;
 	}
-	strcpy(buf, p->dir);
+	strlcpy(buf, p->dir, TMPSIZ);
 	for (c=p->next; c != NULL; c=c->next) {
-		strcat(buf, del);
-		strcat(buf, c->dir);
+		strlcat(buf, del, TMPSIZ);
+		strlcat(buf, c->dir, TMPSIZ);
 	}
 	while (p != NULL) {
 		c = p->next;

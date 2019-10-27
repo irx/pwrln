@@ -20,7 +20,7 @@ new(const char *content, unsigned char bg, unsigned char fg)
 	s->bold = 0;
 	s->next = NULL;
 	s->content = (char *)malloc(strlen(content)+sizeof(char));
-	strcpy(s->content, content);
+	strlcpy(s->content, content, TMPSIZ);
 	return s;
 }
 
@@ -47,21 +47,21 @@ prune(Segment *s)
 char *
 render(Segment *s)
 {
-	char tmp[512], *buf = (char *)malloc(sizeof(char)*512);
+	char tmp[TMPSIZ], *buf = (char *)malloc(sizeof(char)*512);
 	if (s->bold)
-		sprintf(buf, "\001%c[1m\002", esc);
+		snprintf(buf, TMPSIZ, "\001%c[1m\002", esc);
 	else
 		buf[0] = '\0';
-	sprintf(tmp, "\001%c[48;5;%d;38;5;%dm\002 %s ",
+	snprintf(tmp, TMPSIZ, "\001%c[48;5;%d;38;5;%dm\002 %s ",
 	        esc, s->bg, s->fg, s->content);
-	strcat(buf, tmp);
+	strlcat(buf, tmp, TMPSIZ);
 	if (s->next != NULL)
-		sprintf(tmp, "\001%c[0;48;5;%d;38;5;%dm\002%s",
+		snprintf(tmp, TMPSIZ, "\001%c[0;48;5;%d;38;5;%dm\002%s",
 		        esc, s->next->bg, s->bg, glyph_delimiter);
 	else
-		sprintf(tmp, "\001%c[0;38;5;%dm\002%s\001%c[0m\002 ",
+		snprintf(tmp, TMPSIZ, "\001%c[0;38;5;%dm\002%s\001%c[0m\002 ",
 		        esc, s->bg, glyph_delimiter, esc);
-	strcat(buf, tmp);
+	strlcat(buf, tmp, TMPSIZ);
 	return buf;
 }
 
@@ -72,7 +72,7 @@ print(Segment *s)
 	buf[0] = '\0';
 	while (s != NULL) {
 		tmp = render(s);
-		strcat(buf, tmp);
+		strlcat(buf, tmp, TMPSIZ);
 		s = s->next;
 		free(tmp);
 	}
