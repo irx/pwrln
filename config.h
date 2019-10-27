@@ -4,8 +4,8 @@
 static const char esc = 0x1b; /* escape char */
 
 /* Glyphs */
-static const char glyph_delimiter[] = {0xee, 0x82, 0xb0, 0x00};
-static const char glyph_subdelimiter[] = {0xee, 0x82, 0xb1, 0x00};
+static const char glyph_delimiter[] = "\xee\x82\xb0";
+static const char glyph_subdelimiter[] = "\xee\x82\xb1";
 static const char glyph_prompt[] = "%";
 static const char glyph_home[] = "~";
 
