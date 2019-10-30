@@ -23,7 +23,7 @@ static Path * path(char *);
 static Path * remove_home(Path *);
 
 
-Path *
+static Path *
 path(char *str)
 {
 	char buf[TMPSIZ];
@@ -65,7 +65,7 @@ path(char *str)
 	return p;
 }
 
-Path *
+static Path *
 remove_home(Path *p)
 {
 	Path *np, *cp, *ch, *h = path(getenv("HOME"));
