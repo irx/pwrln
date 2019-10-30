@@ -3,6 +3,8 @@
  * Assemble pwrln segment chain and print it
  */
 
+#include <stdlib.h>
+
 #include "pwrln.h"
 #include "segments.h"
 

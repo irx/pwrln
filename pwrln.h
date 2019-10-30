@@ -2,6 +2,13 @@
 
 #define TMPSIZ 512
 
+#ifdef NEED_STRL
+#undef strlcpy
+#undef strlcat
+size_t strlcpy(char *dst, const char *src, size_t dsize);
+size_t strlcat(char *dst, const char *src, size_t dsize);
+#endif
+
 typedef struct Segment Segment;
 struct Segment {
 	Segment *next;

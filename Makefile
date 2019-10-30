@@ -1,10 +1,14 @@
 .PHONY: clean install
 
+# You may remove `NEED_STRL' from CFLAGS
+# and `strl.o' from OBJ if your system
+# provides strlcpy and strlcat.
+
 CC = cc
 PREFIX = /usr/local/bin
-CFLAGS = -std=c99 -pedantic -Wall
+CFLAGS = -std=c99 -pedantic -Wall -DNEED_STRL
 
-OBJ = segment.o main.o pwd.o
+OBJ = segment.o main.o pwd.o strl.o
 HDR = pwrln.h segments.h config.h
 
 pwrln: ${OBJ}
