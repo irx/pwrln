@@ -8,7 +8,7 @@ CC = cc
 PREFIX = /usr/local/bin
 CFLAGS = -std=c99 -pedantic -Wall -DNEED_STRL
 
-OBJ = segment.o main.o pwd.o strl.o
+OBJ = segment.o main.o pwd.o git.o strl.o
 HDR = pwrln.h segments.h config.h
 
 pwrln: ${OBJ}

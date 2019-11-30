@@ -7,3 +7,6 @@
 Segment * user(void);
 Segment * pwd(void);
 Segment * prompt(int status);
+
+/* git */
+Segment * git(void);

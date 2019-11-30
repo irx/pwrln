@@ -14,3 +14,7 @@ static const unsigned char col_default[] = {238, 248};
 static const unsigned char col_user[] = {39, 26};
 static const unsigned char col_home[] = {226, 233};
 static const unsigned char col_prompt[] = {160, 236, 7}; /* error, ok, font */
+static const unsigned char col_git_branch[][2] = {
+	{85, 22}, /* clean */
+	{160, 7} /* dirty */
+};

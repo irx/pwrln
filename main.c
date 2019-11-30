@@ -13,6 +13,7 @@ main(void)
 {
 	Segment *first = user();
 	tail(first)->next = pwd();
+	tail(first)->next = git();
 	tail(first)->next = prompt(0);
 	print(first);
 	return 0;
