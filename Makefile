@@ -6,7 +6,7 @@
 
 CC = cc
 PREFIX = /usr/local/bin
-CFLAGS = -std=c99 -pedantic -Wall -DNEED_STRL
+CFLAGS = -std=c99 -pedantic -Wall -D_DEFAULT_SOURCE -D_BSD_SOURCE -DNEED_STRL
 
 OBJ = segment.o main.o pwd.o git.o strl.o
 HDR = pwrln.h segments.h config.h
