@@ -9,12 +9,15 @@
 #include "segments.h"
 
 int
-main(void)
+main(int argc, char *argv[])
 {
+	int status = 0;
 	Segment *first = user();
 	tail(first)->next = pwd();
 	tail(first)->next = git();
-	tail(first)->next = prompt(0);
+	if (argc > 1)
+		status = atoi(argv[1]);
+	tail(first)->next = prompt(status);
 	print(first);
 	return 0;
 }
