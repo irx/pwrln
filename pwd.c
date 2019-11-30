@@ -96,8 +96,9 @@ Segment *
 user(void)
 {
 	struct passwd *pw;
+	Segment *s;
 	pw = getpwuid(getuid());
-	Segment *s = new(pw->pw_name, col_user[0], col_user[1]);
+	s = new(pw->pw_name, col_user[0], col_user[1]);
 	return s;
 }
 
