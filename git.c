@@ -34,6 +34,7 @@ git(void)
 	char branch[TMPSIZ];
 	if (run_git(branch, "rev-parse --abbrev-ref HEAD", TMPSIZ))
 		return NULL;
-	branch[strcspn(branch, "\n")] = '\0';
+	branch[strcspn(branch, "\n")] = ' ';
+	strlcat(branch, glyph_branch, TMPSIZ);
 	return new(branch, col_git_branch[0][0], col_git_branch[0][1]);
 }

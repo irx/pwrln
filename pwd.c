@@ -96,9 +96,11 @@ Segment *
 user(void)
 {
 	struct passwd *pw;
+	char name[TMPSIZ];
 	Segment *s;
 	pw = getpwuid(getuid());
-	s = new(pw->pw_name, col_user[0], col_user[1]);
+	snprintf(name, TMPSIZ, "%s %s", glyph_user, pw->pw_name);
+	s = new(name, col_user[0], col_user[1]);
 	return s;
 }
 
