@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 Maksymilian Mruszczak */
+/* Copyright (c) 2019-2020 Maksymilian Mruszczak */
 
 #define TMPSIZ 512
 
@@ -16,6 +16,9 @@ struct Segment {
 	int bold;
 	char *content;
 };
+
+/* set target shell based on executable name */
+void set_target_shell(const char *);
 
 /* create new segment <content, bg col, font col> */
 Segment * new(const char *, unsigned char, unsigned char);

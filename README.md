@@ -6,7 +6,20 @@ A WiP powerline prompt generator
 ![](demo.png)
 
 ```sh
-PS1='$(pwrln)'
+# edit config.h and main.c if you want
+make
+make install
+PS1='$(pwrln $?)'
+```
+
+To generate prompt for specific shell append its name delimited by `-`
+to `pwrln` executable name e.g. `pwrln-bash`, `pwrln-ksh`, ...
+
+```sh
+# rename pwrln binary
+mv pwrln pwrln-ksh
+# or create symlink
+ln -s pwrln pwrln-ksh
 ```
 
 

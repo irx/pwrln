@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019 Maksymilian Mruszczak
+ * Copyright (c) 2019-2020 Maksymilian Mruszczak
  * pwrln generic segment functions
  */
 
@@ -10,6 +10,41 @@
 #include "pwrln.h"
 #include "config.h"
 
+enum Shell {
+	SH_GENERIC,
+	SH_BASH,
+	SH_KSH
+};
+
+static enum Shell target_shell;
+static char esc_delim[2][2];
+
+
+void
+set_target_shell(const char *name)
+{
+	char buf[TMPSIZ], *word, *sh_name;
+	strlcpy(buf, name, TMPSIZ);
+	for (word = strtok(buf, "-"); word; word = strtok(NULL, "-"))
+		sh_name = word;
+	if (!strncmp(sh_name, "bash", TMPSIZ)) {
+		target_shell = SH_BASH;
+		esc_delim[0][0] = 0x01;
+		esc_delim[1][0] = 0x02;
+		esc_delim[0][1] = 0x00;
+		esc_delim[1][1] = 0x00;
+	} else if (!strncmp(sh_name, "ksh", TMPSIZ)) {
+		target_shell = SH_KSH;
+		esc_delim[0][0] = 0x01;
+		esc_delim[1][0] = 0x01;
+		esc_delim[0][1] = 0x00;
+		esc_delim[1][1] = 0x00;
+	} else {
+		target_shell = SH_GENERIC;
+		esc_delim[0][0] = 0x00;
+		esc_delim[1][0] = 0x00;
+	}
+}
 
 Segment *
 new(const char *content, unsigned char bg, unsigned char fg)
@@ -52,15 +87,16 @@ render(Segment *s)
 		snprintf(buf, TMPSIZ, "\001%c[1m\002", esc);
 	else
 		buf[0] = '\0';
-	snprintf(tmp, TMPSIZ, "\001%c[48;5;%d;38;5;%dm\002 %s ",
-	        esc, s->bg, s->fg, s->content);
+	snprintf(tmp, TMPSIZ, "%s%c[48;5;%d;38;5;%dm%s %s ",
+	        esc_delim[0], esc, s->bg, s->fg, esc_delim[1], s->content);
 	strlcat(buf, tmp, TMPSIZ);
 	if (s->next != NULL)
-		snprintf(tmp, TMPSIZ, "\001%c[0;48;5;%d;38;5;%dm\002%s",
-		        esc, s->next->bg, s->bg, glyph_delimiter);
+		snprintf(tmp, TMPSIZ, "%s%c[0;48;5;%d;38;5;%dm%s%s",
+		        esc_delim[0], esc, s->next->bg, s->bg, esc_delim[1], glyph_delimiter);
 	else
-		snprintf(tmp, TMPSIZ, "\001%c[0;38;5;%dm\002%s\001%c[0m\002 ",
-		        esc, s->bg, glyph_delimiter, esc);
+		snprintf(tmp, TMPSIZ, "%s%c[0;38;5;%dm%s%s%s%c[0m%s ",
+		        esc_delim[0], esc, s->bg, esc_delim[1],
+		        glyph_delimiter, esc_delim[0], esc, esc_delim[1]);
 	strlcat(buf, tmp, TMPSIZ);
 	return buf;
 }
@@ -70,6 +106,8 @@ print(Segment *s)
 {
 	char *tmp, buf[512];
 	buf[0] = '\0';
+	if (target_shell == SH_KSH)
+		printf("%s\r", esc_delim[0]);
 	while (s != NULL) {
 		tmp = render(s);
 		strlcat(buf, tmp, TMPSIZ);
