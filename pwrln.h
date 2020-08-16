@@ -34,3 +34,6 @@ char * render(Segment *);
 
 /* print all segments in chain into stdout */
 void print(Segment *);
+
+/* print error and exit */
+void fail(const char *);

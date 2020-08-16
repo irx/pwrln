@@ -50,11 +50,15 @@ Segment *
 new(const char *content, unsigned char bg, unsigned char fg)
 {
 	Segment *s = (Segment *)malloc(sizeof(Segment));
+	if (!s)
+		fail("segment init error");
 	s->bg = bg;
 	s->fg = fg;
 	s->bold = 0;
 	s->next = NULL;
 	s->content = (char *)malloc(strlen(content)+sizeof(char));
+	if (!s->content)
+		fail("segment content buffer init error");
 	strlcpy(s->content, content, TMPSIZ);
 	return s;
 }
@@ -83,6 +87,8 @@ char *
 render(Segment *s)
 {
 	char tmp[TMPSIZ], *buf = (char *)malloc(sizeof(char)*512);
+	if (!buf)
+		fail("segment render buffer allocation error");
 	if (s->bold)
 		snprintf(buf, TMPSIZ, "%s%c[1m%s", esc_delim[0], esc, esc_delim[1]);
 	else
@@ -115,4 +121,13 @@ print(Segment *s)
 		free(tmp);
 	}
 	printf("%s", buf);
+}
+
+void
+fail(const char *msg)
+{
+	fprintf(stderr, "pwrln failure: %s: ", msg);
+	perror(NULL);
+	printf("pwrln prompt failed> ");
+	exit(1);
 }
