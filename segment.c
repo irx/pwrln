@@ -84,7 +84,7 @@ render(Segment *s)
 {
 	char tmp[TMPSIZ], *buf = (char *)malloc(sizeof(char)*512);
 	if (s->bold)
-		snprintf(buf, TMPSIZ, "\001%c[1m\002", esc);
+		snprintf(buf, TMPSIZ, "%s%c[1m%s", esc_delim[0], esc, esc_delim[1]);
 	else
 		buf[0] = '\0';
 	snprintf(tmp, TMPSIZ, "%s%c[48;5;%d;38;5;%dm%s %s ",
