@@ -13,11 +13,12 @@
 enum Shell {
 	SH_GENERIC,
 	SH_BASH,
-	SH_KSH
+	SH_KSH,
+	SH_ZSH
 };
 
 static enum Shell target_shell;
-static char esc_delim[2][2];
+static char esc_delim[2][3];
 
 
 void
@@ -39,6 +40,14 @@ set_target_shell(const char *name)
 		esc_delim[1][0] = 0x01;
 		esc_delim[0][1] = 0x00;
 		esc_delim[1][1] = 0x00;
+	} else if (!strncmp(sh_name, "zsh", TMPSIZ)) {
+		target_shell = SH_ZSH;
+		esc_delim[0][0] = '%';
+		esc_delim[1][0] = '%';
+		esc_delim[0][1] = '{';
+		esc_delim[1][1] = '}';
+		esc_delim[0][2] = 0x00;
+		esc_delim[1][2] = 0x00;
 	} else {
 		target_shell = SH_GENERIC;
 		esc_delim[0][0] = 0x00;
