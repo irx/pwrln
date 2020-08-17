@@ -22,6 +22,64 @@ mv pwrln pwrln-ksh
 ln -s pwrln pwrln-ksh
 ```
 
+`make install` creates symlinks for all supported shells.
+
+
+## Shell support
+
+Generating prompt for specific shell boils down to applying proper
+escape code delimiters, so that its input manager (e.g. `readline`)
+takes into account only printable characters when estimating prompt
+length.
+
+Shells recognised by `pwrln` so far:
+ - bash
+ - ksh
+ - zsh
+
+before adding entries to your shell config adjust the code to your
+liking (see [Customisation](#customisation)) and install it with:
+
+```sh
+% make
+# make install
+```
+
+### bash
+
+Add those lines to `.bashrc`:
+
+```sh
+PS1='$(pwrln-bash $?)'
+export PS1
+```
+
+Notice `'` single-quote marks.
+
+### ksh
+
+Roughly the same case as with bash.
+Add those lines to `.kshrc` or `.mkshrc` or `.profile` or whatever:
+
+```sh
+PS1='$(pwrln-ksh $?)'
+export PS1
+```
+
+Notice `'` single-quote marks.
+
+
+### zsh
+
+Add those lines to `.zshrc`:
+
+```sh
+precmd()
+{
+	export PROMPT="$(pwrln-zsh $?)"
+}
+```
+
 
 ## Customisation
 
