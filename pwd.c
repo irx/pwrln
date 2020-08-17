@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019 Maksymilian Mruszczak
+ * Copyright (c) 2019-2020 Maksymilian Mruszczak
  * Most basic types of pwrln segments
  */
 
@@ -119,7 +119,6 @@ pwd(void)
 	c = remove_home(p);
 	if (c != p) {
 		h = new(glyph_home, col_home[0], col_home[1]);
-		h->bold = 1;
 		p = c;
 		if (c == NULL)
 			return h;
