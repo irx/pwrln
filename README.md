@@ -5,6 +5,8 @@ A WiP powerline prompt generator
 
 ![](demo.png)
 
+![](demo2.png)
+
 ```sh
 # edit config.h and main.c if you want
 make
