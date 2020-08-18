@@ -20,6 +20,9 @@ struct Segment {
 /* set target shell based on executable name */
 void set_target_shell(const char *);
 
+/* recognise param in given arg; returns 1 if succesful */
+int parse_arg(const char *);
+
 /* create new segment <content, bg col, font col> */
 Segment * new(const char *, unsigned char, unsigned char);
 

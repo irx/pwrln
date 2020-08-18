@@ -20,6 +20,8 @@ enum Shell {
 static enum Shell target_shell;
 static char esc_delim[2][3];
 
+static void print_version(void);
+
 
 void
 set_target_shell(const char *name)
@@ -53,6 +55,39 @@ set_target_shell(const char *name)
 		esc_delim[0][0] = 0x00;
 		esc_delim[1][0] = 0x00;
 	}
+}
+
+int /* only version param for now */
+parse_arg(const char *arg)
+{
+	if (arg[0] != '-')
+		return 0;
+	switch (arg[1]) {
+	case '-':
+		if (!strcmp(arg, "--version")) {
+			print_version();
+			return 1;
+		}
+		break;
+	case 'v':
+		if (arg[2] == '\0') {
+			print_version();
+			return 1;
+		}
+		break;
+	}
+	return 0;
+}
+
+static void
+print_version(void)
+{
+	Segment *v = new("PWR", 226, 233);
+	v->next = new("LN \xe2\x9a\xa1", 233, 226);
+	v->next->next = new(VERSION, 7, 236);
+	print(v);
+	putchar('\n');
+	prune(v);
 }
 
 Segment *

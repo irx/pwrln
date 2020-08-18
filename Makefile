@@ -1,12 +1,15 @@
 .PHONY: clean install
 
+VERSION = 0.1-rc
+
 # You may remove `NEED_STRL' from CFLAGS
 # and `strl.o' from OBJ if your system
 # provides strlcpy and strlcat.
 
 CC = cc
 PREFIX = /usr/local/bin
-CFLAGS = -std=c99 -pedantic -Wall -D_DEFAULT_SOURCE -D_BSD_SOURCE -DNEED_STRL
+CFLAGS = -std=c99 -pedantic -Wall -D_DEFAULT_SOURCE -D_BSD_SOURCE \
+	 -DVERSION=\"${VERSION}\" -DNEED_STRL
 SHELL_TARGETS = bash ksh zsh
 
 OBJ = segment.o main.o pwd.o git.o strl.o
