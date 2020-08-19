@@ -1,6 +1,13 @@
 /**
  * Copyright (c) 2019-2020 Maksymilian Mruszczak
  * Assemble pwrln segment chain and print it
+ *
+ *   _________________________________
+ *  /   _        _   \                \ TM
+ * /   |_) |  | |_)   \  |   |\ | /_   \
+ * \   |   |/\| | \   /  |__ | \|  /   /
+ *  \________________/________________/
+ *
  */
 
 #include <stdlib.h>

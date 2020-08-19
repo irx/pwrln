@@ -1,11 +1,12 @@
-pwrln
+![PWRLN](https://git.1ux.org/pwrln.git/plain/logo.png)
 =====
 
-A WiP powerline prompt generator
+A simple powerline-like shell prompt generator written in C.
+It strives to be fast (light) and portable.
 
-![](demo.png)
+![preview](https://git.1ux.org/pwrln.git/plain/demo.png)
 
-![](demo2.png)
+![preview](https://git.1ux.org/pwrln.git/plain/demo2.png)
 
 ```sh
 # edit config.h and main.c if you want
