@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019 Maksymilian Mruszczak
+ * Copyright (c) 2019-2020 Maksymilian Mruszczak
  * pwrln git status segment
  */
 
@@ -28,13 +28,23 @@ run_git(char *dst, const char *arg, size_t dsize)
 	return pclose(f);
 }
 
+static int
+is_dirty(void)
+{
+	char buf[TMPSIZ];
+	if (run_git(buf, "status --porcelain", TMPSIZ))
+		return 0;
+	return (buf[0] != '\0');
+}
+
 Segment *
 git(void)
 {
 	char branch[TMPSIZ];
+	int dirty = is_dirty();
 	if (run_git(branch, "rev-parse --abbrev-ref HEAD", TMPSIZ))
 		return NULL;
 	branch[strcspn(branch, "\n")] = ' ';
 	strlcat(branch, glyph_branch, TMPSIZ);
-	return new(branch, col_git_branch[0][0], col_git_branch[0][1]);
+	return new(branch, col_git_branch[dirty][0], col_git_branch[dirty][1]);
 }
