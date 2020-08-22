@@ -51,7 +51,7 @@ set_target_shell(const char *name)
 		esc_delim[1][1] = '}';
 		esc_delim[0][2] = 0x00;
 		esc_delim[1][2] = 0x00;
-	if (!strncmp(sh_name, "rc", TMPSIZ)) {
+	} else if (!strncmp(sh_name, "rc", TMPSIZ)) {
 		target_shell = SH_RC;
 		esc_delim[0][0] = 0x01;
 		esc_delim[1][0] = 0x02;

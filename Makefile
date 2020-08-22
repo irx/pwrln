@@ -1,6 +1,6 @@
 .PHONY: clean install
 
-VERSION = 0.1-rc
+VERSION = 0.1
 
 # You may remove `NEED_STRL' from CFLAGS
 # and `strl.o' from OBJ if your system
