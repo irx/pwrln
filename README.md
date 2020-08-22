@@ -31,7 +31,7 @@ ln -s pwrln pwrln-ksh
 ## Shell support
 
 Generating prompt for specific shell boils down to applying proper
-escape code delimiters, so that its input manager (e.g. `readline`)
+escape code delimiters, so that its input line editor (e.g. `readline`)
 takes into account only printable characters when estimating prompt
 length.
 
@@ -39,6 +39,7 @@ Shells recognised by `pwrln` so far:
  - bash
  - ksh
  - zsh
+ - rc (readline)
 
 before adding entries to your shell config adjust the code to your
 liking (see [Customisation](#customisation)) and install it with:
@@ -80,6 +81,19 @@ Add those lines to `.zshrc`:
 precmd()
 {
 	export PROMPT="$(pwrln-zsh $?)"
+}
+```
+
+### rc
+
+Add those lines to `.rcrc`:
+
+```rc
+fn prompt {
+	_status = $status
+	PWD = `pwd
+	_prompt = `{pwrln-rc $_status}
+	prompt = $^_prompt' '
 }
 ```
 

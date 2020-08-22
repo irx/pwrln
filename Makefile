@@ -10,7 +10,7 @@ CC = cc
 PREFIX = /usr/local/bin
 CFLAGS = -std=c99 -pedantic -Wall -D_DEFAULT_SOURCE -D_BSD_SOURCE \
 	 -DVERSION=\"${VERSION}\" -DNEED_STRL
-SHELL_TARGETS = bash ksh zsh
+SHELL_TARGETS = bash ksh zsh rc
 
 OBJ = segment.o main.o pwd.o git.o strl.o
 HDR = pwrln.h segments.h config.h

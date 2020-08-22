@@ -14,7 +14,8 @@ enum Shell {
 	SH_GENERIC,
 	SH_BASH,
 	SH_KSH,
-	SH_ZSH
+	SH_ZSH,
+	SH_RC
 };
 
 static enum Shell target_shell;
@@ -50,6 +51,12 @@ set_target_shell(const char *name)
 		esc_delim[1][1] = '}';
 		esc_delim[0][2] = 0x00;
 		esc_delim[1][2] = 0x00;
+	if (!strncmp(sh_name, "rc", TMPSIZ)) {
+		target_shell = SH_RC;
+		esc_delim[0][0] = 0x01;
+		esc_delim[1][0] = 0x02;
+		esc_delim[0][1] = 0x00;
+		esc_delim[1][1] = 0x00;
 	} else {
 		target_shell = SH_GENERIC;
 		esc_delim[0][0] = 0x00;
